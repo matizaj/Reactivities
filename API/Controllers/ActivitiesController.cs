@@ -1,3 +1,4 @@
+using System.Threading;
 using System;
 using System.Collections.Generic;
 using System.Net.Cache;
@@ -13,9 +14,9 @@ namespace API.Controllers
     public class ActivitiesController : ApiController
     {
         [HttpGet]
-        public async Task<ActionResult<List<Activity>>> GetActivities()
+        public async Task<ActionResult<List<Activity>>> GetActivities(CancellationToken ct)
         {
-            return await Mediator.Send(new ListActivities.Query());
+            return await Mediator.Send(new ListActivities.Query(), ct);
         }
 
         [HttpGet("{id}")]
