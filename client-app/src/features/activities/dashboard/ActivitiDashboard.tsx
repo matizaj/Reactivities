@@ -10,17 +10,29 @@ interface Props {
     selectedActivity: Activity | undefined;
     selectActivityFn: (id: string)=> void;
     cancelSelectActivity:()=>void;
+    turnEditMode: boolean;
+    openForm: (id?: string | undefined) => void;
+    closeForm: ()=>void;
+    createOrUpdate: (activity: Activity)=>void;
+    removeActivity: (id: string)=> void;
+    submitting: boolean;
 }
 
 const ActivityDashboard = (props: Props) => {
   return (
     <Grid>
       <Grid.Column width='10'>
-        <ActivityList activities={props.activities} mySelectedActivity={props.selectActivityFn}/>
+        <ActivityList activities={props.activities} mySelectedActivity={props.selectActivityFn} removeActivity={props.removeActivity} submitting={props.submitting}/>
       </Grid.Column>
       <Grid.Column width='6'>
-          {props.selectedActivity && <ActivityDetails activity={props.selectedActivity} cancelSelectedActivity={props.cancelSelectActivity}/>}
-          <ActivityForm/>
+          {props.selectedActivity && !props.turnEditMode &&
+          <ActivityDetails 
+          activity={props.selectedActivity} 
+          cancelSelectedActivity={props.cancelSelectActivity}
+        //   openForm={()=>props.openForm(props.selectedActivity?.id)}
+          openForm={props.openForm}
+          />}
+          {props.turnEditMode ?  <ActivityForm closeForm={props.closeForm} activity={props.selectedActivity} createOrEdit={props.createOrUpdate} submitting={props.submitting}/> : null}
       </Grid.Column>
       
     </Grid>

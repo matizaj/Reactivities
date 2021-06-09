@@ -1,13 +1,21 @@
-import React from "react"
+import React, { useState } from "react"
 import { Segment, Item, Button, Label } from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
 
 interface Props {
     activities: Activity[];
     mySelectedActivity: (id: string)=> void;
+    removeActivity: (id: string)=> void;
+    submitting: boolean;
 }
 
 const ActivityList = (props: Props) => {
+    const [target, setTarget]=useState('');
+
+    const handleActivityDelete=(e: any, id: string)=>{
+        setTarget(e.currentTarget.name);
+        props.removeActivity(id);
+    }
   return (
     <Segment  style={{marginTop : '50px'}}>
       <Item.Group divided >
@@ -23,6 +31,7 @@ const ActivityList = (props: Props) => {
                         </Item.Description>
                         <Item.Extra>
                             <Button floated='right' content='View' color='blue' onClick={()=>props.mySelectedActivity(a.id)}></Button>
+                            <Button loading={props.submitting && target===a.id} name={a.id} floated='right' content='Remove' color='red' onClick={(e)=>handleActivityDelete(e, a.id)}></Button>
                             <Label basic content={a.category}/>
                         </Item.Extra>
                     </Item.Content>
