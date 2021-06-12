@@ -36,7 +36,7 @@ const handleChangeInput=(e: ChangeEvent<HTMLInputElement>)=>{
             <Form.Input placeholder='city' value={activity.city} name='city' onChange={handleChangeInput}/>
             <Form.Input placeholder='venue' value={activity.venue} name='venue' onChange={handleChangeInput}/> 
             <Button loading={activityStore.loading} floated='right' positive type='submit' content='Submit'/>
-            <Button floated='right' type='button' content='Cancel' onClick={activityStore.closeForm}/>
+            <Button floated='right' type='button' content='Cancel'/>
         </Form>      
     </Segment>
   )

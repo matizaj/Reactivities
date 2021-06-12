@@ -25,28 +25,50 @@ class ActivityStore {
     loadingActivities=async()=>{
         const response = await agent.Activities.list();        
         response.forEach((ac: Activity) => {
-                ac.date=ac.date.split('T')[0];
-                this.activityRegistry.set(ac.id, ac);
+               this.setActivity(ac);
             });
          this.setLoading(false); 
     }
 
-    selectActivity= (id: string)=>{
-        this.selectedActivity = this.activityRegistry.get(id);
+    loadActivity=async (id: string)=>{
+        let activity = this.getActivity(id);
+        if(activity){
+            this.selectedActivity=activity
+        } else {
+            this.loadingInit=true;
+            const response=await agent.Activities.detail(id);
+            this.setActivity(response);
+            this.selectedActivity=response;
+            this.loadingInit=false;
+        }
+
     }
 
-    cancelSelectedActivity=()=>{
-        this.selectedActivity=undefined;
+    private getActivity=(id: string)=>{
+        return this.activityRegistry.get(id);
     }
 
-    openForm=(id?: string)=>{
-        id ? this.selectActivity(id) : this.cancelSelectedActivity();
-        this.editMode=true;
+    private setActivity=(activity: Activity)=>{
+        activity.date=activity.date.split('T')[0];
+        this.activityRegistry.set(activity.id, activity);
     }
 
-    closeForm=()=>{
-        this.editMode=false;
-    }
+    // selectActivity= (id: string)=>{
+    //     this.selectedActivity = this.activityRegistry.get(id);
+    // }
+
+    // cancelSelectedActivity=()=>{
+    //     this.selectedActivity=undefined;
+    // }
+
+    // openForm=(id?: string)=>{
+    //     id ? this.selectActivity(id) : this.cancelSelectedActivity();
+    //     this.editMode=true;
+    // }
+
+    // closeForm=()=>{
+    //     this.editMode=false;
+    // }
 
     createActivity=async (activity: Activity)=>{
         this.loading=true;
@@ -77,7 +99,7 @@ class ActivityStore {
         runInAction(()=> {
             this.activityRegistry.delete(id);
             if(this.selectedActivity?.id === id) {
-                this.cancelSelectedActivity();
+                this.selectedActivity=undefined;
             }
             this.loading=false;
         });
