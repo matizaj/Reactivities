@@ -10,7 +10,9 @@ export default observer(function ActivityDashboard()  {
   const {activityStore} = useStore();
 
   useEffect(()=>{
-  activityStore.loadingActivities();
+    if(activityStore.activityRegistry.size===0) {
+      activityStore.loadingActivities();
+    }
   }, [activityStore]);
   
   if(activityStore.loadingInit) return <LoadingComponents/>

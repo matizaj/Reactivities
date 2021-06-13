@@ -1,7 +1,6 @@
 import { Activity } from './../models/activity';
 import { makeAutoObservable, runInAction} from "mobx";
 import agent from '../api/agent';
-import { v4 as uuid} from 'uuid';
 
 class ActivityStore {
     activityRegistry = new Map<string, Activity>();
@@ -33,13 +32,15 @@ class ActivityStore {
     loadActivity=async (id: string)=>{
         let activity = this.getActivity(id);
         if(activity){
-            this.selectedActivity=activity
+            this.selectedActivity=activity;
+            return activity;
         } else {
             this.loadingInit=true;
             const response=await agent.Activities.detail(id);
             this.setActivity(response);
             this.selectedActivity=response;
             this.loadingInit=false;
+            return activity;
         }
 
     }
@@ -72,7 +73,6 @@ class ActivityStore {
 
     createActivity=async (activity: Activity)=>{
         this.loading=true;
-        activity.id=uuid();
         await agent.Activities.add(activity);
         runInAction(()=> {
             this.activityRegistry.set(activity.id, activity);
