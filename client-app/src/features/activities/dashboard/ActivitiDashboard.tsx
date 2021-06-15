@@ -22,7 +22,7 @@ export default observer(function ActivityDashboard()  {
         <ActivityList/>
       </Grid.Column>
       <Grid.Column width='6'>
-        <h2>Activity Filters</h2>
+        <h2 style={{marginTop: '90px'}}>Activity Filters</h2>
       </Grid.Column>
       
     </Grid>
