@@ -9,12 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Application.Core;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
     public class ActivitiesController : ApiController
     {
-        [HttpGet]
+
+        [HttpGet]        
         public async Task<IActionResult> GetActivities(CancellationToken ct)
         {
             var result=  await Mediator.Send(new ListActivities.Query(), ct);

@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { ChangeEvent, useEffect, useState } from "react"
-import { Link, Redirect, useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { Button, Form, Segment } from "semantic-ui-react";
 import LoadingComponents from "../../../app/layout/LoadingComponents";
 import { useStore } from "../../../app/stores/store";
@@ -19,7 +19,7 @@ export default observer(function ActivityForm(){
         city:'',
         venue:''
     });
-    
+    console.log(activity);
     useEffect(()=>{
         console.log(urlParam);
         if(urlParam.id) activityStore.loadActivity(urlParam.id).then(resp=> setActivity(resp!));
@@ -46,16 +46,16 @@ export default observer(function ActivityForm(){
     if(activityStore.loadingInit) return <LoadingComponents/>; 
   return (
     <Segment clearing  style={{marginTop: '90px', position: 'sticky', top: '100px'}}>
-        <Form onSubmit={handleSubmit} autoComplete='off'>
-            <Form.Input placeholder='title' value={activity?.title} name='title' onChange={handleChangeInput}/>
-            <Form.Input placeholder='description' value={activity?.description} name='description' onChange={handleChangeInput}/>
-            <Form.Input placeholder='category' value={activity?.category} name='category' onChange={handleChangeInput}/>
-            <Form.Input placeholder='date' type='date' value={activity?.date} name='date' onChange={handleChangeInput}/>
-            <Form.Input placeholder='city' value={activity?.city} name='city' onChange={handleChangeInput}/>
-            <Form.Input placeholder='venue' value={activity?.venue} name='venue' onChange={handleChangeInput}/> 
-            <Button loading={activityStore.loading} floated='right' positive type='submit' content='Submit'/>
-            <Button floated='right' type='button' content='Cancel' as={Link} to='/activities'/>
-        </Form>      
+            <Form onSubmit={handleSubmit} autoComplete='off'>
+                <Form.Input placeholder='title' value={activity.title} name='title' onChange={handleChangeInput}/>
+                <Form.Input placeholder='description' value={activity.description} name='description' onChange={handleChangeInput}/>
+                <Form.Input placeholder='category' value={activity.category} name='category' onChange={handleChangeInput}/>
+                <Form.Input placeholder='date' type='date' value={activity.date} name='date' onChange={handleChangeInput}/>
+                <Form.Input placeholder='city' value={activity.city} name='city' onChange={handleChangeInput}/>
+                <Form.Input placeholder='venue' value={activity.venue} name='venue' onChange={handleChangeInput}/> 
+                <Button loading={activityStore.loading} floated='right' positive type='submit' content='Submit'/>
+                <Button floated='right' type='button' content='Cancel' as={Link} to='/activities'/>
+            </Form>    
     </Segment>
   )
 });
