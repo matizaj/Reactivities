@@ -2,6 +2,7 @@ import { Activity } from './../models/activity';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import { history } from '../..';
+import { User, UserFormValues } from '../models/user';
 
 const sleep=(delay: number)=>{
     return new Promise((resolve,reject)=>{
@@ -11,7 +12,7 @@ const sleep=(delay: number)=>{
 
 const responseBody= <T> (response: AxiosResponse)=>response.data;
 
-axios.defaults.baseURL='http://localhost:5000/api/activities';
+axios.defaults.baseURL='http://localhost:5000/api';
 
 axios.interceptors.response.use(resp=>{
     return sleep(2000).then(()=>{
@@ -58,14 +59,22 @@ const request= {
 }
 
 const Activities = {
-    list: ()=>request.get<Activity[]>(''),
-    detail:  (id: string)=>request.get<Activity>(`/${id}`),
-    add: (body: Activity)=>request.post<Activity>('', body),
-    update: (body: Activity)=>request.put<Activity>(`/${body.id}`, body),
-    remove:  (id: string)=>request.delete<Activity>(`/${id}`)}
+    list: ()=>request.get<Activity[]>('/activities'),
+    detail:  (id: string)=>request.get<Activity>(`/activities/${id}`),
+    add: (body: Activity)=>request.post<Activity>('/activities', body),
+    update: (body: Activity)=>request.put<Activity>(`/activities/${body.id}`, body),
+    remove:  (id: string)=>request.delete<Activity>(`/activities/${id}`)
+}
+
+const Account = {
+    current: ()=>request.get<User>('/account'),
+    login: (body: UserFormValues)=>request.post<User>('/account/login', body),
+    register: (body: UserFormValues)=>request.post<User>('/account/register', body)
+}
 
 const agent = {
-    Activities
+    Activities,
+    Account
 }
 
 export default agent;

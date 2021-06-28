@@ -10,6 +10,7 @@ import ActivityDetails from '../../features/activities/details/ActivityDetails';
 import TestErrors from '../../features/error/TestError';
 import { ToastContainer } from 'react-toastify';
 import NotFound from '../../features/error/NotFound';
+import LoginForm from '../../features/users/LoginForm';
 
 function App() {
   const location = useLocation();
@@ -29,6 +30,7 @@ function App() {
                 <Route key={location.key} path={['/createActivity', '/manage/:id']} component={ActivityForm}/>
                 <Route path='/errors' component={TestErrors}/>
                 <Route path='/not-found' component={NotFound}/>
+                <Route path='/login' component={LoginForm}/>
               </Switch>
               
             </Container>
