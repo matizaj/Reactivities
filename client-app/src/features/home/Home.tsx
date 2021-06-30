@@ -3,9 +3,11 @@ import React from "react"
 import { Link } from "react-router-dom";
 import { Container, Header, Segment, Image, Button } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
+import LoginForm from "../users/LoginForm";
+import RegisterForm from "../users/RegisterForm";
 
 export default observer(function Home(){
-  const {userStore} = useStore();
+  const {userStore, modalStore} = useStore();
   return (
     <div>
       <Segment  inverted textAlign='center' vertical className='masthead'>
@@ -22,7 +24,8 @@ export default observer(function Home(){
               ): (
                 <>
                 <Header  inverted content='Welcome to Reactivities'/>
-                  <Button as={Link} to='/login' inverted size='huge'>Login!</Button>
+                  <Button onClick={()=>modalStore.openModal(<LoginForm/>)} to='/login' inverted size='huge'>Login!</Button>
+                  <Button onClick={()=>modalStore.openModal(<RegisterForm/>)} to='/login' inverted size='huge'>Register!</Button>
                 </>
               )}
               

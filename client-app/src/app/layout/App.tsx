@@ -11,12 +11,24 @@ import TestErrors from '../../features/error/TestError';
 import { ToastContainer } from 'react-toastify';
 import NotFound from '../../features/error/NotFound';
 import LoginForm from '../../features/users/LoginForm';
+import { useStore } from '../stores/store';
+import { useEffect } from 'react';
+import ModalContainer from '../../common/modals/ModalContainer';
 
 function App() {
   const location = useLocation();
+  const {userStore} = useStore();
+
+  useEffect(()=>{
+    if(userStore.token) {
+      userStore.getUser().finally(()=>console.log('look good'));
+    }
+  }, [userStore]);
+
   return (
     <>
       <ToastContainer position='bottom-right' hideProgressBar/>
+      <ModalContainer/>
       <Route exact path='/' component={Home}/>    
       <Route
         path={'/(.+)'}

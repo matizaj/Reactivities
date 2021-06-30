@@ -3,6 +3,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import { history } from '../..';
 import { User, UserFormValues } from '../models/user';
+import { store } from '../stores/store';
 
 const sleep=(delay: number)=>{
     return new Promise((resolve,reject)=>{
@@ -11,6 +12,14 @@ const sleep=(delay: number)=>{
 }
 
 const responseBody= <T> (response: AxiosResponse)=>response.data;
+
+axios.interceptors.request.use(cfg=>{
+    const token  = store.userStore.token;
+    if(token) {
+        cfg.headers.Authorization = `Bearer ${token}`;
+    }
+    return cfg;
+})
 
 axios.defaults.baseURL='http://localhost:5000/api';
 
